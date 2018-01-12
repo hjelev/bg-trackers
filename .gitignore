@@ -2,5 +2,9 @@ data/*
 imdb/*
 trackers/*
 config.yaml
+<<<<<<< HEAD
 daily_mail.py
 __pycache__/*
+=======
+daily_mail.py
+>>>>>>> 7f31bc8615d6527a36bae2cbce1879b4bfa98c29
