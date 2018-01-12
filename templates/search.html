@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+{% block body %}
+	<div class="jumbotron text-center">
+	<h1><i class="fa fa-search fa-fw" aria-hidden="true"></i> Result for {{ query }} </h1>
+	<p class="lead">Some of the results might be duplicated, as the search returns torrents from all trackers.</p>
+	</div>
+	{% if movies %}
+		<div class="panel panel-default">
+			<div class="panel-heading"><i class="fa fa-search fa-fw" aria-hidden="true"></i>  {{movies_count}} Torrents found</div>
+			<div class="panel-body">
+			
+				{% for movie in movies %}
+
+					<div id="imgwrapper">
+						<a href="{{movie['url']}}" target="_blank" >
+						<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
+						</a>
+						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+						<div class="text">
+							<div class='text-center'>
+								<a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank">
+									<b>{{movie['Title']}}</b> ({{movie['Year']}})
+									<br>{{movie['Genre_str']}}
+								</a>
+							</div>	
+						</div>
+					</div>
+
+				{% endfor %}
+			</div>
+		<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;DB was generated on {{updated}}</div>	
+		</div>
+	{% else %}	
+	<h2><i class="fa fa-search fa-fw" aria-hidden="true"></i>  No results found for {{ query }}</h2>
+	{% endif %}	
+		
+	<script type="text/javascript">
+	// create the back to top button
+	$('body').prepend('<a href="#" class="back-to-top">Back to Top</a>');
+
+	var amountScrolled = 300;
+
+	$(window).scroll(function() {
+		if ( $(window).scrollTop() > amountScrolled ) {
+			$('a.back-to-top').fadeIn('slow');
+		} else {
+			$('a.back-to-top').fadeOut('slow');
+		}
+	});
+
+	$('a.back-to-top, a.simple-back-to-top').click(function() {
+		$('html, body').animate({
+			scrollTop: 0
+		}, 700);
+		return false;
+	});
+	</script>
+
+{% endblock%}

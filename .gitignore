@@ -1,0 +1,6 @@
+data/*
+imdb/*
+trackers/*
+config.yaml
+daily_mail.py
+__pycache__/*
