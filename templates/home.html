@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="jumbotron text-center">
+    <h1>BG Torrents Mix</h1>
+    <p class="lead">Here you'll find the latest movies and TV serials from the most popular Bulgarian torrent trackers - Arenabg.com, Zamunda.net, Zelka.org and Alein.org. We list only movies with Bulgarian subtitles or audio.<br />
+	All the movies are sorted by IMDB Rating and can be filtered by genre and year.</p>
+  </div>
+		{% if new_movies %}	
+		<div class="panel panel-default">
+			<div class="panel-heading"><a href="{{ url_for('new_movies') }}"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{ new_movies_count }} Movies Found Today</a></div>
+			<div class="panel-body">
+			
+				{% for movie in new_movies %}
+				{% if movie['Type'] == "movie" %}
+					<div id="imgwrapper">
+						<a href="{{movie['url']}}" target="_blank" >
+						<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
+						</a>
+						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+						<div class="text">
+							<div class='text-center'>
+								<a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank">
+									<b>{{movie['Title']}}</b> ({{movie['Year']}})
+									<br>{{movie['Genre_str']}}
+								</a>
+							</div>	
+						</div>
+					</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+			
+		</div>	
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading"><a href="{{ url_for('poster_gallery', year = '2017', genre = 'All') }}"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Movies from 2017</a></div>
+			<div class="panel-body">
+			
+				{% for movie in top_movies %}
+				{% if movie['Type'] == "movie" %}
+					<div id="imgwrapper">
+						<a href="{{movie['url']}}" target="_blank" >
+						<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
+						</a>
+						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+						<div class="text">
+							<div class='text-center'>
+								<a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank">
+									<b>{{movie['Title']}}</b> ({{movie['Year']}})
+									<br>{{movie['Genre_str']}}
+								</a>
+							</div>	
+						</div>
+					</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+		</div>		
+		<div class="panel panel-default">
+			<div class="panel-heading"><a href="{{ url_for('tv_serials') }}"><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{ serials_count }} TV Series</a></div>
+			<div class="panel-body">
+			
+				{% for movie in top_serials %}
+				{% if movie['Type'] == "serial" %}
+					<div id="imgwrapper">
+						<a href="{{movie['url']}}" target="_blank" >
+						<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
+						</a>
+						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+						<div class="text">
+							<div class='text-center'>
+								<a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank">
+									<b>{{movie['Title']}}</b> ({{movie['Year']}})
+									<br>{{movie['Genre_str']}}
+								</a>
+							</div>	
+						</div>
+					</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+			<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;DB was generated on {{updated}}</div>
+		</div>		
+
+{% endblock%}

@@ -1,0 +1,111 @@
+{% extends 'layout.html' %}
+{% block body %}
+	<div class="jumbotron text-center">
+		<h1><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{genre}} Movies {% if year != 'All' %} from {{ year }} {% endif %}</h1>
+		<p class="lead">Movies from Arenabg.com, Zamunda.net, Zelka.org and Alein.org</p>
+	</div>
+		<div class="panel-group">
+		  <div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse3">Filter by Genre - {{genre}}</a></div>
+			<div id="collapse3" class="panel-collapse collapse {% if genre != 'All' %} in {% endif %}">
+			<div class="panel-body">				
+				{% if genre == 'All' %}		
+					<b><a href="/poster_gallery/">All</a></b>&nbsp;&nbsp;&nbsp;
+				{% else %}
+					<a href="/poster_gallery/">All</a>&nbsp;&nbsp;&nbsp;
+				{% endif %}
+				{% for xgenre in genres %}
+					{% if xgenre == genre %}
+						<b><a href="/poster_gallery/{{xgenre}}/" >{{ xgenre }}</a></b>&nbsp;&nbsp;&nbsp;
+					{% else %}
+						<a href="/poster_gallery/{{xgenre}}/" >{{ xgenre }}</a>&nbsp;&nbsp;&nbsp;
+					{% endif %}
+				{% endfor %}
+			</div>
+			</div>
+		</div>
+		</div>
+
+		<div class="panel-group">
+		  <div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse2">Filter by Year - {{year}}</a></div>
+				
+			<div id="collapse2" class="panel-collapse collapse {% if year != 'All' %} in {% endif %} ">
+			
+			<div class="panel-body">
+
+				{% if year == 'All' %}		
+					<b><a href="/poster_gallery/">All</a></b>&nbsp;&nbsp;&nbsp;
+				{% else %}
+					<a href="/poster_gallery/">All</a>&nbsp;&nbsp;&nbsp;
+				{% endif %}
+				
+				{% for xyear in years %}
+					{% if xyear == year %}
+						<b><a href="/poster_gallery/{{genre}}/{{xyear}}/" >{{ xyear }}</a></b>&nbsp;&nbsp;&nbsp;
+					{% else %}
+						<a href="/poster_gallery/{{genre}}/{{xyear}}/" >{{ xyear }}</a>&nbsp;&nbsp;&nbsp;
+					{% endif %}		
+			
+				{% endfor %}
+			</div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">{{ pagination.info }}</div>
+			<div class="panel-body">
+				<div style="clear: left;" align="center">
+				{{ pagination.links }}
+				</div>
+				{% for movie in movies %}
+					{% if movie['Type'] == "movie" %}
+						<div id="imgwrapper">
+							<a href="{{movie['url']}}" target="_blank" >
+							<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
+							</a>
+							<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+							<div class="text">
+							<div class='text-center'>
+								<a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank">
+									<b>{{movie['Title']}}</b> ({{movie['Year']}})
+									<br>{{movie['Genre_str']}}
+								</a>
+							</div>	
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+				<div  style="clear: left;" " align="center">
+				{{ pagination.links }}
+				</div>
+			</div>
+			<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;DB was generated on {{updated}}</div>
+		</div>
+
+	<script type="text/javascript">
+	// create the back to top button
+	$('body').prepend('<a href="#" class="back-to-top">Back to Top</a>');
+
+	var amountScrolled = 300;
+
+	$(window).scroll(function() {
+		if ( $(window).scrollTop() > amountScrolled ) {
+			$('a.back-to-top').fadeIn('slow');
+		} else {
+			$('a.back-to-top').fadeOut('slow');
+		}
+	});
+
+	$('a.back-to-top, a.simple-back-to-top').click(function() {
+		$('html, body').animate({
+			scrollTop: 0
+		}, 700);
+		return false;
+	});
+	</script>
+
+{% endblock%}

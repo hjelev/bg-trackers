@@ -1,0 +1,24 @@
+# config.yaml
+
+tracker_cache_folder: 'trackers'
+imdb_cache_folder: 'imdb'
+fetch_delay: 1
+
+
+pages_to_scan: 15
+debug: True
+
+#arenabg.com configuration
+arenabg_form_data: {'action':'login', 'email': 'youruser', 'password': 'yourpassword'} 
+arenabg_login_url: 'https://arenabg.com/users/'
+arenabg_internal_url: 'http://arenabg.com/torrents/'
+
+#zamunda.net configuration
+zamunda_internal_url: 'http://zamunda.net/bananas'
+zamunda_login_url: 'http://zamunda.net/takelogin.php'
+zamunda_form_data: {'username': 'youruser', 'password': 'yourpassword'} 
+
+#zelka.org configuration
+zelka_internal_url: 'http://zelka.org/browse.php'
+zelka_login_url: 'http://zelka.org/takelogin.php'
+zelka_form_data: {'username': 'youruser', 'password': 'yourpassword'} 
