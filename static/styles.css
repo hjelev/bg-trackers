@@ -48,7 +48,7 @@ a:hover.back-to-top {
 .hover_img a span { position:absolute; display:none; z-index:99; left: -250px; top: -150px;}
 .hover_img a:hover span { display:block; }
 
-a{padding:0px; text-decoration:none; color:#000000;}
+a {padding:0px; text-decoration:none; color:#000000;}
 
 div#header1{  height: 8px; width: 950px; }
 div#header{background-color:#F3F2ED;  height: 60px; width: 950px; color:#303030 }
