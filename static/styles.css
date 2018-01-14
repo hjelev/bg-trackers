@@ -1,4 +1,9 @@
 //html,body{margin:0;padding:0}
+body {
+    background-image: url("b16.png");
+    background-repeat: repeat;
+}
+
 a.back-to-top {
 	display: none;
 	width: 60px;
@@ -8,7 +13,7 @@ a.back-to-top {
 	z-index: 999;
 	right: 20px;
 	bottom: 20px;
-	background: #CCC8B3 url("/static/up-arrow.png") no-repeat center 43%;
+	background: #CCC8B3 url("/up-arrow.png") no-repeat center 43%;
 	-webkit-border-radius: 30px;
 	-moz-border-radius: 30px;
 	border-radius: 30px;
@@ -160,5 +165,15 @@ form {
 
 .container {
  // padding-top: 20px;	
+	
+}
+
+
+
+div.jumbotron {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #ddd;
+
 	
 }

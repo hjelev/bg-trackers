@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="jumbotron text-center">
+    <h1><i class="fa fa-database fa-fw" aria-hidden="true"></i> Statistics</h1>
+    <p class="lead">Database statistics.</p>
+  </div>
+  
+  Total movies: {{ movies_count }}  <br />
+  Total tv series: {{ serials_count }} <br />
+  Database updated: {{ updated }} <br />
+  Database size: {{ size }}
+{% endblock%}

@@ -8,7 +8,7 @@
   </div>
 		{% if new_movies %}	
 		<div class="panel panel-default">
-			<div class="panel-heading"><a href="{{ url_for('new_movies') }}"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{ new_movies_count }} Movies Found Today</a></div>
+			<div class="panel-heading"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('new_movies') }}">{{ new_movies_count }} Movies Found Today</a></div>
 			<div class="panel-body">
 			
 				{% for movie in new_movies %}
@@ -17,7 +17,7 @@
 						<a href="{{movie['url']}}" target="_blank" >
 						<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
 						</a>
-						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
 						<div class="text">
 							<div class='text-center'>
 								<a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank">
@@ -34,7 +34,7 @@
 		</div>	
 		{% endif %}
 		<div class="panel panel-default">
-			<div class="panel-heading"><a href="{{ url_for('poster_gallery', year = '2017', genre = 'All') }}"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Movies from 2017</a></div>
+			<div class="panel-heading"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('poster_gallery', year = '2017', genre = 'All') }}">{{ movies_count }} Movies from 2017</a></div>
 			<div class="panel-body">
 			
 				{% for movie in top_movies %}
@@ -44,7 +44,7 @@
 						<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
 						</a>
 
-						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
 
 						<div class="text">
 							<div class='text-center'>
@@ -60,7 +60,7 @@
 			</div>
 		</div>		
 		<div class="panel panel-default">
-			<div class="panel-heading"><a href="{{ url_for('tv_serials') }}"><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{ serials_count }} TV Series</a></div>
+			<div class="panel-heading"><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('tv_series') }}">{{ serials_count }} TV Series</a></div>
 			<div class="panel-body">
 			
 				{% for movie in top_serials %}
@@ -70,7 +70,7 @@
 						<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
 						</a>
 
-						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+						<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/images/rate_imdb_small.jpg" width="35" height="17" style="vertical-align:middle">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
 
 						<div class="text">
 							<div class='text-center'>
@@ -84,7 +84,27 @@
 				{% endif %}
 				{% endfor %}
 			</div>
-			<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;DB was generated on {{updated}}</div>
+			<div class="panel-footer"><a href="{{ url_for('db') }}"><i class="fa fa-database fa-fw" aria-hidden="true"></i></a>&nbsp;&nbsp;DB was generated on {{updated}}</div>
 		</div>		
+	<script type="text/javascript">
+	// create the back to top button
+	$('body').prepend('<a href="#" class="back-to-top">Back to Top</a>');
 
+	var amountScrolled = 300;
+
+	$(window).scroll(function() {
+		if ( $(window).scrollTop() > amountScrolled ) {
+			$('a.back-to-top').fadeIn('slow');
+		} else {
+			$('a.back-to-top').fadeOut('slow');
+		}
+	});
+
+	$('a.back-to-top, a.simple-back-to-top').click(function() {
+		$('html, body').animate({
+			scrollTop: 0
+		}, 700);
+		return false;
+	});
+	</script>
 {% endblock%}

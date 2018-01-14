@@ -7,13 +7,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/"><i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp;BG Torrents</a>
+          <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp;BG Torrents</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/poster_gallery/"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;Movies</a></li>
-            <li><a href="/tv_serials/"><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;TV Series</a></li>
-			<li><a href="/new_movies/"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;New Movies</a></li>
+            <li><a href="{{ url_for('poster_gallery') }}"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;Movies</a></li>
+            <li><a href="{{ url_for('tv_series') }}"><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;TV Series</a></li>
+			<li><a href="{{ url_for('new_movies') }}"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;New Movies</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">

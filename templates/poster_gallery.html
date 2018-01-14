@@ -7,19 +7,19 @@
 		<div class="panel-group">
 		  <div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse3">Filter by Genre - {{genre}}</a></div>
+				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse3">Filter by Genre - {{ genre }}</a></div>
 			<div id="collapse3" class="panel-collapse collapse {% if genre != 'All' %} in {% endif %}">
 			<div class="panel-body">				
 				{% if genre == 'All' %}		
-					<b><a href="/poster_gallery/">All</a></b>&nbsp;&nbsp;&nbsp;
+					<b><a href="{{ url_for('poster_gallery') }}">All</a></b>&nbsp;&nbsp;&nbsp;
 				{% else %}
-					<a href="/poster_gallery/">All</a>&nbsp;&nbsp;&nbsp;
+					<a href="{{ url_for('poster_gallery') }}">All</a>&nbsp;&nbsp;&nbsp;
 				{% endif %}
 				{% for xgenre in genres %}
 					{% if xgenre == genre %}
-						<b><a href="/poster_gallery/{{xgenre}}/" >{{ xgenre }}</a></b>&nbsp;&nbsp;&nbsp;
+						<b><a href="{{ url_for('poster_gallery', genre = xgenre) }}" >{{ xgenre }}</a></b>&nbsp;&nbsp;&nbsp;
 					{% else %}
-						<a href="/poster_gallery/{{xgenre}}/" >{{ xgenre }}</a>&nbsp;&nbsp;&nbsp;
+						<a href="{{ url_for('poster_gallery', genre = xgenre) }}" >{{ xgenre }}</a>&nbsp;&nbsp;&nbsp;
 					{% endif %}
 				{% endfor %}
 			</div>
@@ -37,16 +37,16 @@
 			<div class="panel-body">
 
 				{% if year == 'All' %}		
-					<b><a href="/poster_gallery/">All</a></b>&nbsp;&nbsp;&nbsp;
+					<b><a href="{{ url_for('poster_gallery') }}">All</a></b>&nbsp;&nbsp;&nbsp;
 				{% else %}
-					<a href="/poster_gallery/">All</a>&nbsp;&nbsp;&nbsp;
+					<a href="{{ url_for('poster_gallery') }}">All</a>&nbsp;&nbsp;&nbsp;
 				{% endif %}
 				
 				{% for xyear in years %}
 					{% if xyear == year %}
-						<b><a href="/poster_gallery/{{genre}}/{{xyear}}/" >{{ xyear }}</a></b>&nbsp;&nbsp;&nbsp;
+						<b><a href="{{ url_for('poster_gallery', genre = genre, year = xyear) }}" >{{ xyear }}</a></b>&nbsp;&nbsp;&nbsp;
 					{% else %}
-						<a href="/poster_gallery/{{genre}}/{{xyear}}/" >{{ xyear }}</a>&nbsp;&nbsp;&nbsp;
+						<a href="{{ url_for('poster_gallery', genre = genre, year = xyear) }}" >{{ xyear }}</a>&nbsp;&nbsp;&nbsp;
 					{% endif %}		
 			
 				{% endfor %}
@@ -67,7 +67,7 @@
 							<a href="{{movie['url']}}" target="_blank" >
 							<img src="{{movie['Poster']}}" class="hover" width="182" height="268" alt={{movie['Title']}}/>
 							</a>
-							<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/static/images/rate_imdb_small.jpg" width="35" height="17">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
+							<div class="imdb"><a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank" title="{{movie['Genre_str']}}"><img src="/images/rate_imdb_small.jpg" width="35" height="17">&nbsp;&nbsp;{{movie['imdbRating']}}</div>
 							<div class="text">
 							<div class='text-center'>
 								<a href="http://www.imdb.com/title/{{movie['Imdb_id']}}/" target="_blank">
