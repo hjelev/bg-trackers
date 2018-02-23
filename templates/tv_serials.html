@@ -2,20 +2,20 @@
 
 {% block body %}
 	<div class="jumbotron text-center">
-		<h1><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{genre}} TV Series {% if year != 'All' %} from {{ year }} {% endif %}</h1>
-	<p class="lead">TV Series from Arenabg.com, Zamunda.net, Zelka.org and Alein.org</p>
+		<h1><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{% if genre != 'All' %} {{genre}} {% endif %} {{ gettext('TV Series') }} {% if year != 'All' %} {{ gettext('from') }} {{ year }} {% endif %}</h1>
+	<p class="lead">{{ gettext('TV Series from Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, Energy-torrent.com and Alein.org') }}</p>
 	</div>
 	
 		<div class="panel-group">
 		  <div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse1">Filter by Genre - {{genre}}</a></div>
+				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse1">{{ gettext('Filter by Genre') }} {% if genre != 'All' %}- {{genre}} {% endif %}</a></div>
 			<div id="collapse1" class="panel-collapse collapse {% if genre != 'All' %} in {% endif %}">
 			<div class="panel-body">				
 				{% if genre == 'All' %}		
-					<b><a href="{{ url_for('tv_series') }}">All</a></b>&nbsp;&nbsp;&nbsp;
+					<b><a href="{{ url_for('tv_series') }}">{{ gettext('All') }}</a></b>&nbsp;&nbsp;&nbsp;
 				{% else %}
-					<a href="{{ url_for('tv_series') }}">All</a>&nbsp;&nbsp;&nbsp;
+					<a href="{{ url_for('tv_series') }}">{{ gettext('All') }}</a>&nbsp;&nbsp;&nbsp;
 				{% endif %}
 				{% for xgenre in genres %}
 					{% if xgenre == genre %}
@@ -31,14 +31,14 @@
 		<div class="panel-group">
 		  <div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse2">Filter by Year - {{year}}</a></div>
+				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse2">{{ gettext('Filter by Year') }} {% if year != 'All' %} - {{year}} {% endif %}</a></div>
 			<div id="collapse2" class="panel-collapse collapse {% if year != 'All' %}in {% endif %} ">
 			<div class="panel-body">
 
 				{% if year == 'All' %}		
-					<b><a href="{{ url_for('tv_series') }}">All</a></b>&nbsp;&nbsp;&nbsp;
+					<b><a href="{{ url_for('tv_series') }}">{{ gettext('All') }}</a></b>&nbsp;&nbsp;&nbsp;
 				{% else %}
-					<a href="{{ url_for('tv_series') }}">All</a>&nbsp;&nbsp;&nbsp;
+					<a href="{{ url_for('tv_series') }}">{{ gettext('All') }}</a>&nbsp;&nbsp;&nbsp;
 				{% endif %}
 				
 				{% for xyear in years %}
@@ -82,7 +82,7 @@
 				{{ pagination.links }}
 				</div>				
 			</div>
-			<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;DB was generated on {{updated}}</div>
+			<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{ gettext('DB was generated on') }} {{updated}}</div>
 		</div>
 	<script type="text/javascript">
 	// create the back to top button

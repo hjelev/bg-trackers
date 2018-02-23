@@ -2,8 +2,8 @@
 
 {% block body %}
   <div class="jumbotron text-center">
-    <h1><i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i> 500 Internal Server Error</h1>
-    <p class="lead">Something went wrong!</p>
+    <h1><i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i> {{ gettext('500 Internal Server Error') }}</h1>
+    <p class="lead">{{ gettext('Something went wrong!') }}</p>
   </div>
 
 {% endblock%}

@@ -2,13 +2,13 @@
 
 {% block body %}
   <div class="jumbotron text-center">
-    <h1>BG Torrents Mix</h1>
-    <p class="lead">Here you'll find the latest movies and TV serials from the most popular Bulgarian torrent trackers - Arenabg.com, Zamunda.net, Zelka.org and Alein.org. We list only movies with Bulgarian subtitles or audio.<br />
-	All the movies are sorted by IMDB Rating and can be filtered by genre and year.</p>
+    <h1>{{ gettext('BG Torrents Mix') }}</h1>
+    <p class="lead">{{ gettext('Here you\'ll find the latest movies and TV serials from the most popular Bulgarian torrent trackers - Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, Energy-torrent.com and Alein.org.<br /> We list only movies with Bulgarian subtitles or audio.
+	All the movies are sorted by IMDB Rating and can be filtered by genre and year.') }}</p>
   </div>
 		{% if new_movies %}	
 		<div class="panel panel-default">
-			<div class="panel-heading"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('new_movies') }}">{{ new_movies_count }} Movies Found Today</a></div>
+			<div class="panel-heading"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('new_movies') }}">{{ new_movies_count }} {{ gettext('Movies Found Today') }}</a></div>
 			<div class="panel-body">
 			
 				{% for movie in new_movies %}
@@ -34,7 +34,7 @@
 		</div>	
 		{% endif %}
 		<div class="panel panel-default">
-			<div class="panel-heading"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('poster_gallery', year = '2017', genre = 'All') }}">{{ movies_count }} Movies from 2017</a></div>
+			<div class="panel-heading"><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('poster_gallery', year = '2018', genre = 'All') }}">{{ movies_count }} {{ gettext('Movies from 2018') }}</a></div>
 			<div class="panel-body">
 			
 				{% for movie in top_movies %}
@@ -60,7 +60,7 @@
 			</div>
 		</div>		
 		<div class="panel panel-default">
-			<div class="panel-heading"><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('tv_series') }}">{{ serials_count }} TV Series</a></div>
+			<div class="panel-heading"><i class="fa fa-tv fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ url_for('tv_series') }}">{{ serials_count }} {{ gettext('TV Series') }}</a></div>
 			<div class="panel-body">
 			
 				{% for movie in top_serials %}
@@ -84,7 +84,7 @@
 				{% endif %}
 				{% endfor %}
 			</div>
-			<div class="panel-footer"><a href="{{ url_for('db') }}"><i class="fa fa-database fa-fw" aria-hidden="true"></i></a>&nbsp;&nbsp;DB was generated on {{updated}}</div>
+			<div class="panel-footer"><a href="{{ url_for('db') }}"><i class="fa fa-database fa-fw" aria-hidden="true"></i></a>&nbsp;&nbsp;{{ gettext('DB was generated on') }} {{updated}}</div>
 		</div>		
 	<script type="text/javascript">
 	// create the back to top button

@@ -1,12 +1,12 @@
 {% extends 'layout.html' %}
 {% block body %}
 	<div class="jumbotron text-center">
-	<h1><i class="fa fa-search fa-fw" aria-hidden="true"></i> Result for {{ query.title() }} </h1>
-	<p class="lead">The search works with titles, imdbids and artists. Some of the results might be duplicated, as the search returns torrents from all trackers.</p>
+	<h1><i class="fa fa-search fa-fw" aria-hidden="true"></i> {{ gettext('Result for') }} {{ query.title() }} </h1>
+	<p class="lead">{{ gettext('The search works with titles, imdbids and artists. Some of the results might be duplicated, as the search returns torrents from all trackers.') }}</p>
 	</div>
 	{% if movies %}
 		<div class="panel panel-default">
-			<div class="panel-heading"><i class="fa fa-search fa-fw" aria-hidden="true"></i>  {{movies_count}} Torrents found</div>
+			<div class="panel-heading"><i class="fa fa-search fa-fw" aria-hidden="true"></i>  {{movies_count}} {{ gettext('Torrents found') }}</div>
 			<div class="panel-body">
 			
 				{% for movie in movies %}
@@ -31,7 +31,7 @@
 		<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;DB was generated on {{updated}}</div>	
 		</div>
 	{% else %}	
-	<h2><i class="fa fa-search fa-fw" aria-hidden="true"></i>  No results found for {{ query.title() }}</h2>
+	<h2><i class="fa fa-search fa-fw" aria-hidden="true"></i>  {{ gettext('No results found for') }} {{ query.title() }}</h2>
 	{% endif %}	
 		
 	<script type="text/javascript">

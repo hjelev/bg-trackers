@@ -10,13 +10,32 @@ import pickle
 import sys
 import html
 import subprocess
+import tmdbsimple as tmdb
 from datetime import datetime
 from flask import Flask, render_template, flash, request, redirect, url_for, session, logging
 from flask_paginate import Pagination, get_page_parameter
 from wtforms import Form, StringField
+from flask.ext.babel import Babel, gettext
 
 app = Flask(__name__, static_folder='static', static_url_path='')
+app.config['BABEL_DEFAULT_LOCALE'] = 'bg'
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+babel = Babel(app)
+
+LANGUAGES = {
+    'en': 'English',
+    'bg': 'Bulgarian'
+}
+
+# @babel.localeselector
+# def get_locale():
+    # return 
+
+@babel.localeselector
+def get_locale():
+    if request.args.get('lang'):
+        session['lang'] = request.args.get('lang')
+    return session.get('lang', 'en')
 
 PER_PAGE = 20
 MAX_SEARCH_RESULTS = 50
@@ -39,10 +58,13 @@ def db():
 	movies = torrents.torrents
 	top_movies, movies_count, xserials_count, genres, years, actors = filter_torrents(movies , type = 'movie')
 	top_serials, xmovies_count, serials_count, genres, years, actors = filter_torrents(movies, type = 'serial')
+	
 	updated = arenabg.updated_new
 
 	size = du(arenabg.get_path() + "/data/")
-	return render_template('db.html', movies_count = movies_count, serials_count = serials_count, updated = updated, size = size)
+	imdb = du(arenabg.get_path() + "/imdb/")
+	trackers = du(arenabg.get_path() + "/trackers/")
+	return render_template('db.html', movies_count = movies_count, serials_count = serials_count, updated = updated, size = size, imdb = imdb, trackers = trackers)
 	
 def du(path):
     """disk usage in human readable format (e.g. '2,1GB')"""
@@ -84,9 +106,16 @@ def update():
 	
 	arenabg.updated = arenabg.get_update_date()
 	arenabg.updated_new = arenabg.get_update_date()
-	torrents.torrents = []
-	torrents.add(arenabg.movies + zamunda.movies + zelka.movies + alein_org.movies)
 	
+	energy_torrent.movies = energy_torrent.get_cached_list()
+	energy_torrent.new_movies = energy_torrent.get_new_cached_list()		
+
+	p2pbg_com.updated = p2pbg_com.get_update_date()
+	p2pbg_com.updated_new = p2pbg_com.get_update_date()
+	
+	torrents.torrents = []
+	torrents.add(arenabg.movies + zamunda.movies + zelka.movies + alein_org.movies + energy_torrent.movies + p2pbg_com.movies)
+	# torrents.add(arenabg.movies + zamunda.movies + zelka.movies + alein_org.movies + energy_torrent.movies + p2pbg_com.movies)
 	return redirect(url_for('index'))
 
 @cache.cached(timeout = 50)	
@@ -94,7 +123,7 @@ def update():
 def index():
 
 	movies = torrents.torrents
-	top_movies, movies_count, xserials_count, genres, years, actors = filter_torrents(movies, genre = 'All', year = '2017', type = 'movie')
+	top_movies, movies_count, xserials_count, genres, years, actors = filter_torrents(movies, genre = 'All', year = '2018', type = 'movie')
 	top_movies = paginate_torrents(top_movies, 5 , 1)
 	
 	top_serials, xmovies_count, serials_count, genres, years, actors = filter_torrents(movies, type = 'serial')
@@ -102,7 +131,7 @@ def index():
 	top_serials = paginate_torrents(top_serials, 5 , 1)
 
 	try:
-		new_movies = arenabg.new_movies + zamunda.new_movies + zelka.new_movies + alein_org.new_movies
+		new_movies = arenabg.new_movies + zamunda.new_movies + zelka.new_movies + alein_org.new_movies + energy_torrent.new_movies + p2pbg_com.new_movies
 		filtered_movies, new_movies_count, xserials_count, genres, years, actors = filter_torrents(new_movies)
 	except TypeError:
 		new_movies = None
@@ -167,15 +196,14 @@ def poster_gallery(genre, year, page):
 @app.route('/new_movies/', defaults = {'genre': 'All', 'year': 'All'})
 @app.route('/new_movies/<string:genre>/<string:year>')
 def new_movies(genre, year):
-	# print(genre, year)
 	try:
-		new_movies = arenabg.new_movies + zelka.new_movies + zamunda.new_movies + alein_org.new_movies
+		new_movies = arenabg.new_movies + zelka.new_movies + zamunda.new_movies + alein_org.new_movies + energy_torrent.new_movies + p2pbg_com.new_movies
 	except TypeError:
 		new_movies = []
 	filtered_movies, movies_count, serials_count, genres, years, actors = filter_torrents(new_movies, genre, year)
 	updated = arenabg.updated_new
 	
-	title = genre + ' New torrents sorted by IMDB'
+	title = genre + gettext(' New torrents sorted by IMDB')
 	
 	return render_template('new_movies.html',
 							movies = filtered_movies, 
@@ -265,7 +293,9 @@ def count_torrents(filtered_movies):
 	
 # returns movies or serials only
 def separate(movies, type):
-	separated = [movie for movie in movies if type == movie['Type']]				
+	separated = [movie for movie in movies if type == movie['Type']]
+		
+	separated = [movie for movie in separated if not movie['Year'] == None]
 	return separated
 
 # used for soring list of dics							
@@ -311,19 +341,25 @@ def get_years(movies):
 	for movie in movies:
 		if '–' in str(movie['Year']):
 			years.add(str(movie['Year']).split('–')[0])
-		else:
-			years.add(movie['Year'])
+		else:			
+			if not movie['Year'] == None:
+				years.add(movie['Year'])
 	years = list(years)
-	years.sort(reverse=True)
+	try:
+		years.sort(reverse=True)
+	except TypeError:
+		years = []
 	return years	
 
 def paginate_torrents(torrents, per_page, page):
 	paginated = [torrents[i:i + per_page] for i in range(0, len(torrents), per_page)]
 	return paginated[page - 1]
 	
-#load configuratin variables for trackers
+# load configuratin variables for trackers
 CONFIG = open(os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.yaml')
 CONFIG_DATA = yaml.safe_load(CONFIG)
+
+THEMOVIEDB_API_KEY = CONFIG_DATA['themoviedb_api_key']
 
 FETCH_DELAY = CONFIG_DATA['fetch_delay']
 TRACKER_CACHE_FOLDER = CONFIG_DATA['tracker_cache_folder']
@@ -332,25 +368,35 @@ DEBUG = CONFIG_DATA['debug']
 PAGES_TO_SCAN = CONFIG_DATA['pages_to_scan']
 MISSING_IMDB_POSTER = "/images/poster.jpg"
 
-#arenabg.com
+# arenabg.com
 ARENABG_FORM_DATA = CONFIG_DATA['arenabg_form_data']
 ARENABG_LOGIN_URL = CONFIG_DATA['arenabg_login_url']
 ARENABG_INTERNAL_URL = CONFIG_DATA['arenabg_internal_url']
 
-#zamunda.net
+# zamunda.net
 ZAMUNDA_INTERNAL_URL = CONFIG_DATA['zamunda_internal_url']
 ZAMUNDA_LOGIN_URL = CONFIG_DATA['zamunda_login_url']
 ZAMUNDA_FORM_DATA = CONFIG_DATA['zamunda_form_data']
 
-#zelka.org
+# zelka.org
 ZELKA_INTERNAL_URL = CONFIG_DATA['zelka_internal_url']
 ZELKA_LOGIN_URL = CONFIG_DATA['zelka_login_url']
 ZELKA_FORM_DATA = CONFIG_DATA['zelka_form_data']
 
-#alien_org
+# alien_org
 ALIEN_ORG_INTERNAL_URL = CONFIG_DATA['alien_org_internal_url']
 ALIEN_ORG_LOGIN_URL = CONFIG_DATA['alien_org_login_url']
 ALIEN_ORG_FORM_DATA = CONFIG_DATA['alien_org_form_data']
+
+# energy_torrent
+ENERGY_TORRENT_INTERNAL_URL = CONFIG_DATA['energy_torrent_internal_url']
+ENERGY_TORRENT_LOGIN_URL = CONFIG_DATA['energy_torrent_login_url']
+ENERGY_TORRENT_FORM_DATA = CONFIG_DATA['energy_torrent_form_data']
+
+# p2pbg_com
+P2PBG_COM_INTERNAL_URL = CONFIG_DATA['p2pbg_com_internal_url']
+P2PBG_COM_LOGIN_URL = CONFIG_DATA['p2pbg_com_login_url']
+P2PBG_COM_FORM_DATA = CONFIG_DATA['p2pbg_com_form_data']
 
 class Torrents():
 	def __init__(self, torrents):
@@ -386,7 +432,9 @@ class Arenabg():
 	@staticmethod
 	def get_update_date():
 		try:
-			updated = time.strftime("%m/%d/%Y %I:%M:%S %p",time.localtime(os.path.getmtime(Arenabg.get_path() + '/data/zelka.org')))
+			updated = time.strftime("%m/%d/%Y %I:%M:%S %p",
+						time.localtime(os.path.getmtime(Arenabg.get_path() + '/data/zelka.org'))
+									)
 		except FileNotFoundError:
 			print('File not found')
 			return None
@@ -395,7 +443,7 @@ class Arenabg():
 	# create and return the torrent site login session	
 	def tracker_login(self):
 		tracker_login_session = requests.Session()
-		tracker_login_session.post(self.login_url, data = self.user_data)
+		tracker_login_session.post(self.login_url, data = self.user_data , verify=False)
 		return tracker_login_session
 		
 	#returns all torrent details urls
@@ -431,7 +479,10 @@ class Arenabg():
 		file_name = re.sub('[^A-Za-z0-9]+', '', url)
 		
 		try:			
-			imdb_id = pickle.load(open(os.path.join(self.get_path(), TRACKER_CACHE_FOLDER, file_name), 'rb'))
+			imdb_id = pickle.load(open(os.path.join(self.get_path(),
+													TRACKER_CACHE_FOLDER, 
+													file_name), 'rb')
+													)
 			try:
 				imdb_id = imdb_id.replace(' ', '')
 			except:
@@ -444,17 +495,16 @@ class Arenabg():
 			response = self.tracker_login_session.get(url)
 			html = response.text		
 			link = []
-			soup = bs(html, 'html.parser') 
+			soup = bs(html) 
+			# print(url)
 			for link in soup.findAll('a'):
 				if 'www.imdb.com' in str(link):
 					imdb_id = link['href'].split('/')
-					
+					# print(imdb_id)
 					for id in imdb_id:
-						if 'tt' in id:
+						if id[:2] == 'tt':
 							imdb_id = id
-							
-					# imdb_id = link['href'].split('/')[4].strip().replace(' ', '')
-					
+
 					if imdb_id[:2] == 'tt':
 						if DEBUG:
 							print(imdb_id + ' New movie imdbid')
@@ -480,11 +530,11 @@ class Arenabg():
 	#extract movie data from IMDB site
 	@staticmethod
 	def get_media_imdb(imdbid):
-		Arenabg.imdb_urls_served += 1
-		
+		Arenabg.imdb_urls_served += 1		
 		try:			
 			result = pickle.load(open(Arenabg.get_path()+ '/imdb/'+ imdbid, 'rb'))
 			new = False
+			
 			return result, new			
 		except:
 			if DEBUG:
@@ -527,6 +577,7 @@ class Arenabg():
 														.split(',')
 														)
 			stars = list(filter(None, stars))
+			genre_str = ', '.join(genre)
 			
 			# parse title
 			t = soup.findAll('meta', attrs = {'property': 'og:title'})
@@ -554,8 +605,8 @@ class Arenabg():
 					except:
 						title_year = None
 						
-			genre_str = ', '.join(genre)		
-			# print(genre_str)	
+				
+
 			result = {'Imdb_id': imdbid, 'Type': type,
 						'Year': title_year, 'Title': title,
 						'imdbRating': rating, 'Poster': poster,
@@ -567,28 +618,38 @@ class Arenabg():
 						'wb' ))			
 		return result, new
 		
+	def get_trailer(self, title):
+		tmdb.API_KEY = THEMOVIEDB_API_KEY
+		search = tmdb.Search()
+		response = search.movie(query=title)
+		return search.results
+	
 	#returns a lists of movies with their imdb data
 	def get_list(self):
 		list = []
 		imdb_ids_list = []
 		for movie in self.get_movies():
-				if DEBUG:
-					print('total urls: {} - procesed urls: {} - imdb urls: {}'
-						.format(self.total_movies, 
-								self.tracker_urls_served, 
-								self.imdb_urls_served))
-			
-				imdb_id = self.get_movie_imdb_id(movie)
-				if imdb_id :
-					if imdb_id not in imdb_ids_list:
-						movie_data, is_movie_new = self.get_media_imdb(imdb_id)
-						if DEBUG:
-							print(movie)
-						if movie_data and imdb_id:
-							movie_data['url'] = movie
-							movie_data['New'] = is_movie_new
-							list.append(movie_data)
-							imdb_ids_list.append(imdb_id)
+				try:
+					if DEBUG:
+						print('total urls: {} - procesed urls: {} - imdb urls: {}'
+							.format(self.total_movies, 
+									self.tracker_urls_served, 
+									self.imdb_urls_served))
+				
+					imdb_id = self.get_movie_imdb_id(movie)
+					if imdb_id :
+						if imdb_id not in imdb_ids_list:
+							movie_data, is_movie_new = self.get_media_imdb(imdb_id)
+							if DEBUG:
+								print(movie)
+							if movie_data and imdb_id:
+								movie_data['url'] = movie
+								movie_data['New'] = is_movie_new
+								list.append(movie_data)
+								imdb_ids_list.append(imdb_id)
+				except ConnectionError:
+					print('connection error ----------------------------------------------')
+					
 		return list
 		
 	def save_list(self):
@@ -603,7 +664,8 @@ class Arenabg():
 	def save_new(self, movies):
 		new_torrents = []
 		try:
-			old_torrents = pickle.load(open(self.get_path() + '/data/' + self.tracker_name + '_new', 'rb'))
+			old_torrents = pickle.load(open(self.get_path() 
+									+ '/data/' + self.tracker_name + '_new', 'rb'))
 		except:
 			old_torrents = []
 			
@@ -690,13 +752,12 @@ class Zelka(Arenabg):
 		self.total_movies = len(urls)
 		return urls
 	
+	
 class Alein_org(Arenabg):
-
 	#get tracker movies urls
 	def get_movies(self):
 		pageurls = []
 		for i in range(1, PAGES_TO_SCAN + 1, 1):
-		#http://alein.org/index.php?page=torrents&ssubs=1&active=1&order=3&by=2&pages=2
 			pageurls.append(ALIEN_ORG_INTERNAL_URL 
 							+ '&ssubs=1&active=1&order=3&by=2&pages=' 
 							+ str(i) 
@@ -711,7 +772,6 @@ class Alein_org(Arenabg):
 			html = response.text
 			soup = bs(html) 
 			# get all torrent details urls on the current page
-			#print(soup.findAll('a'))
 			for link in soup.findAll('a'): 
 				#print(link)
 				if 'page=torrent-details' in link['href']:
@@ -719,20 +779,73 @@ class Alein_org(Arenabg):
 						
 			time.sleep(FETCH_DELAY)
 		self.total_movies = len(urls)
-		#print(urls)
 		return urls
 
+		
+class Energy_torrent(Arenabg):
+	#get tracker movies urls
+	def get_movies(self):
+		pageurls = []
+		#Builds a list of urls to be scanned
+		for i in range(0, PAGES_TO_SCAN , 1): 
+			pageurls.append(ENERGY_TORRENT_INTERNAL_URL + '?page=' + str(i))
+		urls = set()
+		for url in pageurls: #gets the links from each url	
+			if DEBUG:
+				print('Processing {} urls - current {}'.format(len(pageurls),url))
+				
+			response = self.tracker_login_session.get(url)
+			html = response.text
+			soup = bs(html, 'html5lib') 
+			for link in soup.findAll('a',href=True):
 
+				if ('details.php' in link['href'] and 'bookmark.php' not in link['href'] 
+				and 'list' not in link['href'] and 'toseeders' not in link['href'] 
+				and 'tocomm' not in link['href'] and 'todlers' not in link['href']):
+					urls.add('http://energy-torrent.com/' + link['href'])
+			time.sleep(FETCH_DELAY)
+		self.total_movies = len(urls)
+		return urls
+
+		
+class P2pbg_com(Arenabg):
+	#get tracker movies urls
+	def get_movies(self):
+		pageurls = []
+		#Builds a list of urls to be scanned
+		for i in range(0, PAGES_TO_SCAN , 1): 
+			pageurls.append(P2PBG_COM_INTERNAL_URL + '&pages=' + str(i + 1))
+		urls = set()
+		for url in pageurls: #gets the links from each url	
+			if DEBUG:
+				print('Processing {} urls - current {}'.format(len(pageurls),url))
+				
+			response = self.tracker_login_session.get(url)
+			html = response.text
+			soup = bs(html, 'html5lib') 
+			for link in soup.findAll('a',href=True):
+
+				if ('page=torrent-details' in link['href'] and '#comments' not in link['href']):
+					urls.add('http://p2pbg.com/' + link['href'])
+			time.sleep(FETCH_DELAY)
+		self.total_movies = len(urls)
+
+		return urls		
+		
 if __name__ == '__main__':	
 	arenabg = Arenabg(ARENABG_LOGIN_URL, ARENABG_FORM_DATA)
 	zamunda = Zamunda(ZAMUNDA_LOGIN_URL, ZAMUNDA_FORM_DATA)
 	zelka = Zelka(ZELKA_LOGIN_URL, ZELKA_FORM_DATA)
 	alein_org = Alein_org(ALIEN_ORG_LOGIN_URL, ALIEN_ORG_FORM_DATA)
-	
+	energy_torrent = Energy_torrent(ENERGY_TORRENT_LOGIN_URL, ENERGY_TORRENT_FORM_DATA)
+	p2pbg_com = P2pbg_com(P2PBG_COM_LOGIN_URL, P2PBG_COM_FORM_DATA)
+
 	torrents = Torrents(arenabg)
-	torrents.add(arenabg.movies + zamunda.movies + zelka.movies + alein_org.movies)
+	torrents.add(arenabg.movies + zamunda.movies + zelka.movies + alein_org.movies + energy_torrent.movies + p2pbg_com.movies)
 #	print(torrents.torrents)
-	
+	# for t in arenabg.movies:
+		# time.sleep(FETCH_DELAY)
+		# print(arenabg.get_trailer(t['Title']))
 	app.secret_key='bgtorrentskey123'
 	app.run(debug=False, 
 		host='0.0.0.0', 

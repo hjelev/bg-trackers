@@ -2,7 +2,7 @@
 
 {% block body %}
   <div class="jumbotron text-center">
-    <h1><i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i> 404 Not Found Error</h1>
-    <p class="lead">The page you are looking for was not found!</p>
+    <h1><i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i> {{ gettext('404 Not Found Error') }}</h1>
+    <p class="lead">{{ gettext('The page you are looking for was not found!') }}</p>
   </div>
 {% endblock%}

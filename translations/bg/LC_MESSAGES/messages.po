@@ -1,0 +1,167 @@
+# Bulgarian translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-02-23 23:47+0200\n"
+"PO-Revision-Date: 2018-02-23 21:21+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: bg\n"
+"Language-Team: bg <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.3\n"
+
+#: index.py:206
+msgid " New torrents sorted by IMDB"
+msgstr " Нови торенти подредени по IMDB оценка"
+
+#: templates/404.html:5
+msgid "404 Not Found Error"
+msgstr "404 Страницата не е намерена"
+
+#: templates/404.html:6
+msgid "The page you are looking for was not found!"
+msgstr "Страницата която търсите не е намерена!"
+
+#: templates/500.html:5
+msgid "500 Internal Server Error"
+msgstr ""
+
+#: templates/500.html:6
+msgid "Something went wrong!"
+msgstr "Нещо стана ;-("
+
+#: templates/home.html:5
+msgid "BG Torrents Mix"
+msgstr "Търсачка за торенти"
+
+#: templates/home.html:6
+msgid ""
+"Here you'll find the latest movies and TV serials from the most popular "
+"Bulgarian torrent trackers - Arenabg.com, Zamunda.net, Zelka.org, "
+"P2pbg.com, Energy-torrent.com and Alein.org.<br /> We list only movies "
+"with Bulgarian subtitles or audio.\n"
+"\tAll the movies are sorted by IMDB Rating and can be filtered by genre "
+"and year."
+msgstr ""
+"Тук ще намерите най-новите филми и ТВ сериали от най-популярните "
+"Български торент сайтове - Arenabg.com, Zamunda.net, Zelka.org, "
+"P2pbg.com, Energy-torrent.com and Alein.org.<br /> Каталогът съдържа само"
+" филми с Български субтитри или озвучаване -\n"
+"\tсортиран е по imdb оценка и може да се филтрира по жанр и година."
+
+#: templates/home.html:11
+msgid "Movies Found Today"
+msgstr "Филма намерени днес"
+
+#: templates/home.html:37
+msgid "Movies from 2018"
+msgstr "Филма от 2018 г."
+
+#: templates/home.html:63 templates/includes/_navbar.html:15
+#: templates/tv_serials.html:5
+msgid "TV Series"
+msgstr "ТВ Сериали"
+
+#: templates/home.html:87 templates/new_movies.html:82
+#: templates/poster_gallery.html:86 templates/tv_serials.html:85
+msgid "DB was generated on"
+msgstr "Базата е обновена на"
+
+#: templates/layout.html:10
+msgid "BG Torrents"
+msgstr "БГ Торенти"
+
+#: templates/includes/_navbar.html:16 templates/new_movies.html:5
+msgid "New Movies"
+msgstr "Нови Филми"
+
+#: templates/new_movies.html:5 templates/poster_gallery.html:4
+#: templates/tv_serials.html:5
+msgid "from"
+msgstr "от"
+
+#: templates/new_movies.html:6
+msgid "Movies found today."
+msgstr "Филми намерени днес"
+
+#: templates/new_movies.html:14 templates/poster_gallery.html:10
+#: templates/tv_serials.html:12
+msgid "Filter by Genre"
+msgstr "Филтрирай по Жанр"
+
+#: templates/new_movies.html:18 templates/new_movies.html:20
+#: templates/new_movies.html:41 templates/new_movies.html:43
+#: templates/poster_gallery.html:14 templates/poster_gallery.html:16
+#: templates/poster_gallery.html:40 templates/poster_gallery.html:42
+#: templates/tv_serials.html:16 templates/tv_serials.html:18
+#: templates/tv_serials.html:39 templates/tv_serials.html:41
+msgid "All"
+msgstr "Всички"
+
+#: templates/new_movies.html:36 templates/poster_gallery.html:33
+#: templates/tv_serials.html:34
+msgid "Filter by Year"
+msgstr "Филтрирай по година"
+
+#: templates/includes/_navbar.html:14 templates/new_movies.html:60
+#: templates/poster_gallery.html:4
+msgid "Movies"
+msgstr "Филми"
+
+#: templates/new_movies.html:85
+msgid "No new movies found today"
+msgstr "Няма филми намерени днес"
+
+#: templates/poster_gallery.html:5
+msgid ""
+"Movies from Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, Energy-"
+"torrent.com and Alein.org"
+msgstr ""
+"Филми от Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, Energy-"
+"torrent.com и Alein.org"
+
+#: templates/search.html:4
+msgid "Result for"
+msgstr "Резултати за"
+
+#: templates/search.html:5
+msgid ""
+"The search works with titles, imdbids and artists. Some of the results "
+"might be duplicated, as the search returns torrents from all trackers."
+msgstr ""
+"Търсачката работи с заглавия, имена на артисти или imdbid. Някой от "
+"резултатите може да се дублират, защото се показват резултати от всички "
+"индексирани сайтове."
+
+#: templates/search.html:9
+msgid "Torrents found"
+msgstr "Намерени торенти"
+
+#: templates/search.html:34
+msgid "No results found for"
+msgstr "Няма резултати за"
+
+#: templates/tv_serials.html:6
+msgid ""
+"TV Series from Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, Energy-"
+"torrent.com and Alein.org"
+msgstr ""
+"ТВ сериали от Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, "
+"Energytorrent.com и Alein.org"
+
+#: templates/includes/_navbar.html:10
+msgid "BGTorrents.tk"
+msgstr ""
+
+#: templates/includes/_navbar.html:38
+msgid "Search"
+msgstr "Търси"
+

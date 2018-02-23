@@ -2,8 +2,8 @@
 
 {% block body %}
 	<div class="jumbotron text-center">
-		<h1><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;New Movies - {{genre}} {% if year != 'All' %} from {{ year }} {% endif %}
-		<p class="lead"> Movies found today.</p>
+		<h1><i class="fa fa-film fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{ gettext('New Movies') }} {% if genre != 'All' %}- {{genre}} {% endif %} {% if year != 'All' %} {{ gettext('from') }} {{ year }} {% endif %}
+		<p class="lead"> {{ gettext('Movies found today.') }}</p>
 		</h1>
 	</div>
 	{% if movies %}
@@ -11,13 +11,13 @@
 		<div class="panel-group">
 		  <div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse1">Filter by Genre - {{genre}}</a></div>
+				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse1">{{ gettext('Filter by Genre') }}{% if genre != 'All' %}- {{genre}} {% endif %}</a></div>
 			<div id="collapse1" class="panel-collapse collapse {% if genre != 'All' %} in {% endif %}">
 			<div class="panel-body">				
 				{% if genre == 'All' %}		
-					<b><a href="{{ url_for('new_movies') }}">All</a></b>&nbsp;&nbsp;&nbsp;
+					<b><a href="{{ url_for('new_movies') }}">{{ gettext('All') }}</a></b>&nbsp;&nbsp;&nbsp;
 				{% else %}
-					<a href="{{ url_for('new_movies') }}">All</a>&nbsp;&nbsp;&nbsp;
+					<a href="{{ url_for('new_movies') }}">{{ gettext('All') }}</a>&nbsp;&nbsp;&nbsp;
 				{% endif %}
 				{% for xgenre in genres %}
 					{% if xgenre == genre %}
@@ -33,14 +33,14 @@
 		<div class="panel-group">
 		  <div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse2">Filter by Year - {{year}}</a></div>
+				<i class="fa fa-filter fa-fw" aria-hidden="true"></i> <a data-toggle="collapse" href="#collapse2">{{ gettext('Filter by Year') }} {% if year != 'All' %} - {{year}} {% endif %}</a></div>
 			<div id="collapse2" class="panel-collapse collapse {% if year != 'All' %}in {% endif %} ">
 			<div class="panel-body">
 
 				{% if year == 'All' %}		
-					<b><a href="{{ url_for('new_movies') }}">All</a></b>&nbsp;&nbsp;&nbsp;
+					<b><a href="{{ url_for('new_movies') }}">{{ gettext('All') }}</a></b>&nbsp;&nbsp;&nbsp;
 				{% else %}
-					<a href="{{ url_for('new_movies') }}">All</a>&nbsp;&nbsp;&nbsp;
+					<a href="{{ url_for('new_movies') }}">{{ gettext('All') }}</a>&nbsp;&nbsp;&nbsp;
 				{% endif %}
 				
 				{% for xyear in years %}
@@ -57,7 +57,7 @@
 		</div>
 		
 		<div class="panel panel-default">
-			<div class="panel-heading">{{movies_count}} Movies</div>
+			<div class="panel-heading">{{movies_count}} {{ gettext('Movies') }}</div>
 			<div class="panel-body">
 			
 				{% for movie in movies %}
@@ -79,10 +79,10 @@
 				{% endif %}
 				{% endfor %}
 			</div>
-			<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;DB was generated on {{updated}}</div>
+			<div class="panel-footer"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{{ gettext('DB was generated on') }} {{updated}}</div>
 		</div>
 	{% else %}	
-	<h2>No new movies found today</h2>
+	<h2>{{ gettext('No new movies found today') }}</h2>
 	{% endif %}
 	
 	<script type="text/javascript">
