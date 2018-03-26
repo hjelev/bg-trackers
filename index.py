@@ -27,9 +27,6 @@ LANGUAGES = {
     'bg': 'Bulgarian'
 }
 
-# @babel.localeselector
-# def get_locale():
-    # return 
 
 @babel.localeselector
 def get_locale():

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-02-23 23:47+0200\n"
+"POT-Creation-Date: 2018-02-25 01:51+0200\n"
 "PO-Revision-Date: 2018-02-23 21:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: bg\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
 
-#: index.py:206
+#: index.py:203
 msgid " New torrents sorted by IMDB"
 msgstr " Нови торенти подредени по IMDB оценка"
 
@@ -154,8 +154,8 @@ msgid ""
 "TV Series from Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, Energy-"
 "torrent.com and Alein.org"
 msgstr ""
-"ТВ сериали от Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, "
-"Energytorrent.com и Alein.org"
+"ТВ сериали от Arenabg.com, Zamunda.net, Zelka.org, P2pbg.com, Energy-"
+"torrent.com и Alein.org"
 
 #: templates/includes/_navbar.html:10
 msgid "BGTorrents.tk"
